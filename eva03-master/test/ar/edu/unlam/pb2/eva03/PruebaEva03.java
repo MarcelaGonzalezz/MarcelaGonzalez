@@ -60,8 +60,10 @@ public class PruebaEva03 {
 		actual.agregarDeportista(new Nadador(1008, "Luna", "Crol"));
 		actual.agregarDeportista(new Nadador(1009, "Victor", "Mariposa"));
 		actual.agregarDeportista(new Triatleta(1004, "Cecilia", "Ironman", TipoDeBicicleta.TRIA));
-			
-		assertEquals((Integer) 10, actual.getCantidadSocios());		
+		
+		Integer ve = 10;
+		Integer vo = actual.getSocios().size();
+		assertEquals(ve, vo);
 	}
 	
 	@Test (expected = NoEstaPreparado.class)
@@ -69,10 +71,15 @@ public class PruebaEva03 {
 		// En las carreras de natación sólo pueden inscribirse los que sean INadador
 		Deportista celeste = new Corredor(1000, "Celeste", 10000);
 		Club actual = new Club("Sitas");
+		try {
 		actual.agregarDeportista(celeste);
 		actual.crearEvento(TipoDeEvento.CARRERA_NATACION_EN_AGUAS_ABIERTAS, "Maraton de aguas abiertas");
-		
-		assertNotEquals((Integer)1, actual.inscribirEnEvento("Maraton de aguas abiertas", celeste));		
+
+		assertNotEquals((Integer)1, actual.inscribirEnEvento("Maraton de aguas abiertas", celeste));
+		}catch (NoEstaPreparado e){
+			e.printStackTrace();
+		}
+				
 	}
 	
 	@Test (expected = NoEstaPreparado.class)
@@ -90,10 +97,13 @@ public class PruebaEva03 {
 	public void  queUnCorredorPuedaCorrerUnaMaraton() throws NoEstaPreparado{		
 		Deportista celeste = new Corredor(999, "Celeste", 42000);
 		Club actual = new Club("Moron");
-				
+		try {
 		((Corredor)celeste).setCantidadDeKilometrosEntrenados(100000);
 		actual.crearEvento(TipoDeEvento.CARRERA_42K, "Maraton de New York");
 		
-		assertEquals((Integer)1, actual.inscribirEnEvento("Maraton de New York", celeste));			
+		assertEquals((Integer)1, actual.inscribirEnEvento("Maraton de New York", celeste));		
+		}catch (NoEstaPreparado e) {
+			e.printStackTrace();
+		}
 	}
 }
